@@ -1,20 +1,19 @@
 'use strict';
 
-let arr = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+let week = ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'];
 
-// Вывести на экран все дни недели
-// Каждый из них с новой строчки
-// Выходные дни - курсивом
-// Текущий день - жирным шрифтом(использовать объект даты)
-let date = new Date();
-let n = date.getDay();
+let options = {weekday: 'long'};
+let currentDate = new Date();
+let weekDay = new Intl.DateTimeFormat('ru-RU', options).format(currentDate);
 
-arr.forEach(function(element){
-  if (element === arr[n]) {
-    console.log(element, '!');
+for (let element of week) {
+  if ((element === weekDay) && (element === 'суббота' || element === 'воскресенье')) {
+    document.write('<br>' + '<strong>' + '<i>' + element + '</i>' + '</strong>');
+  } else if (element === weekDay) {
+    document.write('<br>' + '<strong>' + element + '</strong>');
+  } else if (element === 'суббота' || element === 'воскресенье') {
+    document.write('<br>' + '<i>' + element + '</i>');
+  } else {
+    document.write('<br>' + element);
   }
-  if (element === 'Суббота' || element === 'Воскресенье') {
-    console.log(element, '?');
-  }
-    console.log(element);
-});
+}
