@@ -15,8 +15,10 @@ const checkbox = document.querySelector('#deposit-check');
 console.log('checkbox: ', checkbox);
 
 // Поля для ввода возможных доходов (additional_income-item) при помощи querySelectorAll
-const incomes = document.querySelectorAll('.additional_income-item');
-console.log('incomes: ', incomes);
+const income1 = document.querySelectorAll('.additional_income-item')[0];
+console.log('income1: ', income1);
+const income2 = document.querySelectorAll('.additional_income-item')[1];
+console.log('income2: ', income2);
 
 // Каждый элемент в правой части программы через класс(не через querySelector), которые имеют в имени класса "-value", начиная с class="budget_day-value" и заканчивая class="target_month-value">
 const budgetDay = document.getElementsByClassName('budget_day-value')[0];
