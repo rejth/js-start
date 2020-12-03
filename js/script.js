@@ -21,12 +21,12 @@ bookTitle3.textContent = 'Книга 3. this и Прототипы Объект�
 const adv = document.querySelector('.adv').remove();
 
 // Восстановить порядок глав во второй и пятой книге (внимательно инспектируйте индексы элементов, поможет dev tools)
-const book2 = document.querySelectorAll('.book ul')[1].children;
+const book2 = document.querySelectorAll('.book>ul')[1].children;
 console.log('book2: ', book2);
 book2[3].after(book2[6]);
 book2[4].after(book2[8]);
 
-const book5 = document.querySelectorAll('.book ul')[4].children;
+const book5 = document.querySelectorAll('.book>ul')[4].children;
 console.log('book5 : ', book5);
 book5[2].before(book5[9]);
 book5[2].after(book5[4]);
@@ -36,5 +36,6 @@ book5[3].after(book5[5]);
 const newElement = document.createElement('li');
 newElement.textContent = 'Глава 8: За пределами ES6';
 
-const book6 = document.querySelectorAll('.book ul')[5];
+const book6 = document.querySelectorAll('.book>ul')[5];
+console.log('book6 : ', book6 );
 book6.append(newElement);
