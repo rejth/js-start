@@ -1,0 +1,26 @@
+html {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f9f9;
+  font-family: Arial, sans-serif;
+  font-size: 32px;
+  line-height: 1.429;
+  color: black;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  text-align: center;
+}
+
+.task-1 {
+  margin-top: 120px;
+}
+
+.task-2 {
+  margin-top: 120px;
+}
