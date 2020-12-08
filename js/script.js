@@ -13,8 +13,6 @@ const incomePlusButton = document.querySelector('.income_add'), // кнопка 
       additionalExpensesItemValue = document.querySelector('.additional_expenses-item'), // возможные расходы
       targetAmountValue = document.querySelector('.target-amount'), // цель
       periodSelectValue = document.querySelector('.period-select'), // ползунок "период расчета"
-      namePlaceholderInputs = document.querySelectorAll('.data input[placeholder="Наименование"]'),
-      digitPlaceholderInputs = document.querySelectorAll('.data input[placeholder="Сумма"]'),
       // Результат расчета
       budgetMonthValue = document.querySelector('.budget_month-value'), // результат - бюджет на месяц
       budgetDayValue = document.querySelector('.budget_day-value'), // результат - бюджет на день
@@ -26,7 +24,9 @@ const incomePlusButton = document.querySelector('.income_add'), // кнопка 
 
 let incomeItems = document.querySelectorAll('.income-items'), // дополнительные доходы
     expensesItems = document.querySelectorAll('.expenses-items'), // обязательные расходы
-    periodAmountValue = document.querySelector('.period-amount'); // период расчета
+    periodAmountValue = document.querySelector('.period-amount'), // период расчета
+    namePlaceholderInputs = document.querySelectorAll('.data input[placeholder="Наименование"]'),
+    digitPlaceholderInputs = document.querySelectorAll('.data input[placeholder="Сумма"]');
 
 let appData = {
     deposit: false,
@@ -68,8 +68,18 @@ let appData = {
       this.budget = 0;
       this.budgetDay = 0;
       this.budgetMonth = 0;
-      [...document.querySelectorAll('input')].map(item => item.value = ''); // очистка всех input
-      [...document.querySelectorAll('.data input')].map(item => item.disabled = false); // разблокировка всех input
+      // удаление созданных блоков с расходами
+      let actualExpensesItemsArray = [...document.querySelectorAll('.expenses-items')];
+      actualExpensesItemsArray.filter(item => item !== actualExpensesItemsArray[0]).forEach(item => item.remove());
+      // удаление созданных блоков с доходами
+      let actualIncomesItemsArray = [...document.querySelectorAll('.income-items')];
+      actualIncomesItemsArray.filter(item => item !== actualIncomesItemsArray[0]).forEach(item => item.remove());
+      // очистка всех input
+      [...document.querySelectorAll('input')].map(item => item.value = '');
+      // разблокировка всех input
+      [...document.querySelectorAll('.data input')].map(item => item.disabled = false);
+      // Сброс ползунка
+      periodSelectValue.value = '1';
       cancelButton.style.display = 'none';
       startButton.style.display = 'block';
       startButton.disabled = true;
@@ -174,12 +184,20 @@ cancelButton.addEventListener('click', appData.reset.bind(appData));
 expensesPlusButton.addEventListener('click', appData.addExpensesBlock);
 incomePlusButton.addEventListener('click', appData.addIncomesBlock);
 
-// Валидация форм для ввода цифр
-[...digitPlaceholderInputs].forEach(input => input.addEventListener('input', function() {
-  this.value = this.value.replace(/[^\d]/g, '');
-}));
-
 // Валидация форм для ввода букв
-[...namePlaceholderInputs].forEach(input => input.addEventListener('input', function() {
-  this.value = this.value.replace(/[^А-Яа-яЁё\s\,]|[\d]/g, '');
-}));
+let inputsString = document.querySelectorAll('.data input[placeholder="Наименование"]');
+document.addEventListener('input', function() {
+    inputsString = document.querySelectorAll('.data input[placeholder="Наименование"]');
+    inputsString.forEach(function(item) {
+      item.value = item.value.replace(/[^А-Яа-яЁё\s\,]|[\d]/g, '');
+    });
+});
+
+// Валидация форм для ввода цифр
+let inputsDisits = document.querySelectorAll('.data input[placeholder="Сумма"]');
+document.addEventListener('input', function() {
+    inputsDisits = document.querySelectorAll('.data input[placeholder="Сумма"]');
+    inputsDisits.forEach(function(item) {
+      item.value = item.value.replace(/[^\d]/g, '');
+    });
+});
