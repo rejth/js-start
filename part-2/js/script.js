@@ -86,7 +86,7 @@ AppData.prototype.reset = function() {
   // разблокировка всех input
   [...document.querySelectorAll('.data input')].map(item => item.disabled = false);
   // разблокировка всех buttons
-  [...document.querySelectorAll('.data button')].map(item => item.disabled = false); // блокировка всех кнопок
+  [...document.querySelectorAll('.data button')].map(item => item.disabled = false);
   // Сброс ползунка
   periodSelectValue.value = '1';
   periodAmountValue.textContent = '1';
@@ -135,6 +135,7 @@ AppData.prototype.addIncomesBlock = function() {
 
 // Получить сумму обязательных расходов
 AppData.prototype.getExpenses = function() {
+  expensesItems = document.querySelectorAll('.expenses-items');
   expensesItems.forEach(item => {
     let itemExpenses = item.querySelector('.expenses-title').value;
     let cashExpenses = item.querySelector('.expenses-amount').value;
@@ -146,6 +147,7 @@ AppData.prototype.getExpenses = function() {
 
 // Получить сумму дополнительных доходов
 AppData.prototype.getIncomes = function() {
+  incomeItems = document.querySelectorAll('.income-items');
   incomeItems.forEach(item => {
     let itemIncomes = item.querySelector('.income-title').value;
     let cashIncomes = item.querySelector('.income-amount').value;

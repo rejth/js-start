@@ -26,7 +26,7 @@ DomElement.prototype.create = function() {
   } else if (this.selector.charAt(0) === '#') {
 
     let newElement = document.createElement("p");
-    newElement.classList.add(this.selector.slice(1));
+    newElement.setAttribute('id', this.selector.slice(1));
     newElement.innerHTML = '<h1>Это новый параграф на странице</h1>';
 
     newElement.style.cssText=`height: ${this.height};
