@@ -1,11 +1,8 @@
 'use strict';
 
 const startButton = document.querySelector('#start'), // кнопка "рассчитать"
-      cancelButton = document.querySelector('#cancel'); // кнопка "сбросить"
-
-startButton.disabled = true;
-
-const incomePlusButton = document.querySelector('.income_add'), // кнопка "+" доход
+      cancelButton = document.querySelector('#cancel'), // кнопка "сбросить"
+      incomePlusButton = document.querySelector('.income_add'), // кнопка "+" доход
       expensesPlusButton = document.querySelector('.expenses_add'), // кнопка "+" расход
       depositCheckboxValue = document.querySelector('#deposit-check'), // чекбокс "депозит"
       possibleIncomeValueOne = document.querySelectorAll('.additional_income-item')[0], // возможный доход 1
@@ -29,6 +26,7 @@ let incomeItems = document.querySelectorAll('.income-items'), // дополни�
     namePlaceholderInputs = document.querySelectorAll('.data input[placeholder="Наименование"]'),
     digitPlaceholderInputs = document.querySelectorAll('.data input[placeholder="Сумма"]');
 
+startButton.disabled = true;
 
 const AppData = function() {
     this.deposit = false;
@@ -210,21 +208,21 @@ AppData.prototype.eventListeners = function() {
   expensesPlusButton.addEventListener('click', this.addExpensesBlock.bind(this));
   incomePlusButton.addEventListener('click', this.addIncomesBlock.bind(this));
 
-// Валидация форм для ввода букв
-document.addEventListener('input', function() {
-    inputsString = document.querySelectorAll('.data input[placeholder="Наименование"]');
-    inputsString.forEach(function(item) {
-      item.value = item.value.replace(/[^А-Яа-яЁё\s\,]|[\d]/g, '');
-    });
-});
+  // Валидация форм для ввода букв
+  document.addEventListener('input', function() {
+      inputsString = document.querySelectorAll('.data input[placeholder="Наименование"]');
+      inputsString.forEach(function(item) {
+        item.value = item.value.replace(/[^А-Яа-яЁё\s\,]|[\d]/g, '');
+      });
+  });
 
-// Валидация форм для ввода цифр
-document.addEventListener('input', function() {
-    inputsDisits = document.querySelectorAll('.data input[placeholder="Сумма"]');
-    inputsDisits.forEach(function(item) {
-      item.value = item.value.replace(/[^\d]/g, '');
-    });
-});
+  // Валидация форм для ввода цифр
+  document.addEventListener('input', function() {
+      inputsDisits = document.querySelectorAll('.data input[placeholder="Сумма"]');
+      inputsDisits.forEach(function(item) {
+        item.value = item.value.replace(/[^\d]/g, '');
+      });
+  });
 };
 
 const appData = new AppData();
