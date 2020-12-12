@@ -48,6 +48,8 @@ const AppData = function() {
 // Начать расчет
 AppData.prototype.start = function() {
   [...document.querySelectorAll('.data input')].map(item => item.disabled = true); // блокировка всех input
+  periodSelectValue.disabled = false; // но не ползунка, чтобы можно было менять диапазон расчета
+  [...document.querySelectorAll('.data button')].map(item => item.disabled = true); // блокировка всех кнопок
   this.budget = +salaryAmountValue.value;
   this.getExpenses();
   this.getIncomes();
@@ -83,8 +85,12 @@ AppData.prototype.reset = function() {
   [...document.querySelectorAll('input')].map(item => item.value = '');
   // разблокировка всех input
   [...document.querySelectorAll('.data input')].map(item => item.disabled = false);
+  // разблокировка всех buttons
+  [...document.querySelectorAll('.data button')].map(item => item.disabled = false); // блокировка всех кнопок
   // Сброс ползунка
   periodSelectValue.value = '1';
+  periodAmountValue.textContent = '1';
+  // Возвращение кнопок в исходное состояние
   cancelButton.style.display = 'none';
   startButton.style.display = 'block';
   startButton.disabled = true;
@@ -220,5 +226,4 @@ document.addEventListener('input', function() {
 };
 
 const appData = new AppData();
-console.log('appData : ', appData );
 appData.eventListeners();
