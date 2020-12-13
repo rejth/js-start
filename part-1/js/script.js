@@ -107,8 +107,18 @@ class AppData {
     startButton.style.display = 'block';
     startButton.disabled = true;
 
-    // Сброс депозита
-    this.deposit = false;
+    // Сброс чекбокса "Депозит"
+    depositCheckboxValue.checked = false;
+
+    depositBankValue.style.display = 'none';
+    depositBankValue.value = 0;
+
+    depositAmountValue.style.display = 'none';
+    depositAmountValue.value = '';
+
+    depositPercentValue.style.display = 'none';
+    depositPercentValue.value = '';
+
   }
 
   // Показать результаты расчета
@@ -202,7 +212,7 @@ class AppData {
 
   // Получить бюджет на месяц и на день
   getBudget() {
-    const monthIncomeFromDeposit = this.moneyDeposit * this.percentDeposit / 12;
+    const monthIncomeFromDeposit = this.moneyDeposit * (this.percentDeposit / 100) / 12;
     this.budgetMonth = Math.ceil(this.budget + this.incomeMonth - this.expensesMonth + monthIncomeFromDeposit);
     this.budgetDay = Math.floor(this.budgetMonth / 30);
   }
@@ -217,6 +227,7 @@ class AppData {
     return this.budgetMonth * periodSelectValue.value;
   }
 
+  // Сохранить информацию по депозиту
   getInfoDeposit() {
     if (this.deposit) {
       this.percentDeposit = depositPercentValue.value;
@@ -224,16 +235,22 @@ class AppData {
     }
   }
 
+  // Изменение процентой ставки по депозиту в зависимости от выбранного банка
   changePercent() {
-    const selectedBankPercent = this.value;
+    const selectedBankPercent = this.value; // процентная ставка выбранного банка
+    // если выбран "Другой" - даем возможность пользователю ввести ставку
     if (selectedBankPercent === 'other') {
-      // TODO
+      depositPercentValue.style.display = 'inline-block';
+      depositPercentValue.value = '';
+      depositPercentValue.disabled = false;
     } else {
       depositPercentValue.value = selectedBankPercent;
+      depositPercentValue.style.display = 'none';
+      depositPercentValue.disabled = true;
     }
   }
 
-  // Чекбокс "Депозит"
+  // Обработка события "Депозит" = checked
   depositHandler() {
     if (depositCheckboxValue.checked) {
       this.deposit = true;
@@ -273,7 +290,7 @@ class AppData {
     document.addEventListener('input', () => {
       inputsString = document.querySelectorAll('.data input[placeholder="Наименование"]');
       inputsString.forEach(item => {
-        item.value = item.value.replace(/[^А-Яа-яЁё\s\,]|[\d]/g, '');
+        item.value = item.value.replace(/[^А-Яа-яЁё\s\,]|[\d]/g, ''); // только буквы
       });
     });
 
@@ -281,8 +298,21 @@ class AppData {
     document.addEventListener('input', () => {
       inputsDisits = document.querySelectorAll('.data input[placeholder="Сумма"]');
       inputsDisits.forEach(item => {
-        item.value = item.value.replace(/[^\d]/g, '');
+        item.value = item.value.replace(/[^\d]/g, ''); // только цифры
       });
+    });
+
+    // Валидация форм для ввода процентой ставки
+    document.addEventListener('input', () => {
+      if (depositPercentValue.style.display === 'inline-block') {
+        depositPercentValue.value = depositPercentValue.value.replace(/[^\d]/g, ''); // только цифры
+        if (depositPercentValue.value > 100) {
+          alert('Введите корректное значение в поле "Проценты"');
+          startButton.disabled = true;
+        } else {
+          startButton.disabled = false;
+        }
+      }
     });
   }
 }
