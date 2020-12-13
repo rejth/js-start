@@ -4,13 +4,16 @@ const startButton = document.querySelector('#start'), // кнопка "расс�
       cancelButton = document.querySelector('#cancel'), // кнопка "сбросить"
       incomePlusButton = document.querySelector('.income_add'), // кнопка "+" доход
       expensesPlusButton = document.querySelector('.expenses_add'), // кнопка "+" расход
-      depositCheckboxValue = document.querySelector('#deposit-check'), // чекбокс "депозит"
       possibleIncomeValueOne = document.querySelectorAll('.additional_income-item')[0], // возможный доход 1
       possibleincomeValueTwo = document.querySelectorAll('.additional_income-item')[1], // возможный доход 2
       salaryAmountValue = document.querySelector('.salary-amount'), // месячный доход
       additionalExpensesItemValue = document.querySelector('.additional_expenses-item'), // возможные расходы
       targetAmountValue = document.querySelector('.target-amount'), // цель
       periodSelectValue = document.querySelector('.period-select'), // ползунок "период расчета"
+      depositCheckboxValue = document.querySelector('#deposit-check'), // чекбокс "депозит"
+      depositBankValue = document.querySelector('.deposit-bank'),
+      depositAmountValue = document.querySelector('.deposit-amount'),
+      depositPercentValue = document.querySelector('.deposit-percent'),
       // Результат расчета
       budgetMonthValue = document.querySelector('.budget_month-value'), // результат - бюджет на месяц
       budgetDayValue = document.querySelector('.budget_day-value'), // результат - бюджет на день
@@ -57,6 +60,7 @@ class AppData {
     this.getIncomes();
     this.getExpensesMonth();
     this.getAddExpenses();
+    this.getInfoDeposit();
     this.getBudget();
     this.showResult();
 
@@ -102,6 +106,9 @@ class AppData {
     cancelButton.style.display = 'none';
     startButton.style.display = 'block';
     startButton.disabled = true;
+
+    // Сброс депозита
+    this.deposit = false;
   }
 
   // Показать результаты расчета
@@ -195,7 +202,8 @@ class AppData {
 
   // Получить бюджет на месяц и на день
   getBudget() {
-    this.budgetMonth = Math.ceil(this.budget + this.incomeMonth - this.expensesMonth);
+    const monthIncomeFromDeposit = this.moneyDeposit * this.percentDeposit / 12;
+    this.budgetMonth = Math.ceil(this.budget + this.incomeMonth - this.expensesMonth + monthIncomeFromDeposit);
     this.budgetDay = Math.floor(this.budgetMonth / 30);
   }
 
@@ -207,6 +215,39 @@ class AppData {
   // Получить сумму накоплений за период
   calcSavedMoney() {
     return this.budgetMonth * periodSelectValue.value;
+  }
+
+  getInfoDeposit() {
+    if (this.deposit) {
+      this.percentDeposit = depositPercentValue.value;
+      this.moneyDeposit = depositAmountValue.value;
+    }
+  }
+
+  changePercent() {
+    const selectedBankPercent = this.value;
+    if (selectedBankPercent === 'other') {
+      // TODO
+    } else {
+      depositPercentValue.value = selectedBankPercent;
+    }
+  }
+
+  // Чекбокс "Депозит"
+  depositHandler() {
+    if (depositCheckboxValue.checked) {
+      this.deposit = true;
+      depositBankValue.style.display = 'inline-block';
+      depositAmountValue.style.display = 'inline-block';
+      depositBankValue.addEventListener('change', this.changePercent);
+    } else {
+      this.deposit = false;
+      depositBankValue.style.display = 'none';
+      depositAmountValue.style.display = 'none';
+      depositBankValue.value = '';
+      depositAmountValue.value = '';
+      depositBankValue.removeEventListener('change', this.changePercent);
+    }
   }
 
   // Слушатели событий
@@ -224,6 +265,9 @@ class AppData {
     // Кнопки "+"
     expensesPlusButton.addEventListener('click', this.addExpensesBlock.bind(this));
     incomePlusButton.addEventListener('click', this.addIncomesBlock.bind(this));
+
+    // Чекбокс "Депозит"
+    depositCheckboxValue.addEventListener('change', this.depositHandler.bind(this));
 
     // Валидация форм для ввода букв
     document.addEventListener('input', () => {
