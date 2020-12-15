@@ -270,11 +270,11 @@ class AppData {
         startButton.addEventListener('click', this.start.bind(this));
 
         // Кнопка "Сбросить"
-        cancelButton.addEventListener('click', this.reset.bind(this));
+        cancelButton.addEventListener('click', this.reset);
 
         // Кнопки "+"
-        expensesPlusButton.addEventListener('click', this.addExpensesBlock.bind(this));
-        incomePlusButton.addEventListener('click', this.addIncomesBlock.bind(this));
+        expensesPlusButton.addEventListener('click', this.addExpensesBlock);
+        incomePlusButton.addEventListener('click', this.addIncomesBlock);
 
         // Чекбокс "Депозит"
         depositCheckboxValue.addEventListener('change', this.depositHandler.bind(this));
