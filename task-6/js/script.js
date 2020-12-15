@@ -28,7 +28,7 @@ if (hours >= 4 && hours < 12) {
 }
 
 if (hours >= 12 && hours < 18) {
-  hi.textContent = 'Доброе день';
+  hi.textContent = 'Добрый день';
 }
 
 if (hours >= 18 && hours < 23) {
