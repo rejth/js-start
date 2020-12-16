@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
+  // Таймер
   function countTimer(deadline) {
     const timerHours = document.querySelector('#timer-hours'),
           timerMinutes = document.querySelector('#timer-minutes'),
@@ -33,9 +34,68 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    updateClock();
     idInterval = setInterval(updateClock, 1000);
   }
+  countTimer('20 december 2020');
 
-  countTimer('17 december 2020');
+  // Меню
+  const toggleMenu = () => {
+    const menuButton = document.querySelector('.menu'),
+          menu = document.querySelector('menu'),
+          closeButton = document.querySelector('.close-btn'),
+          menuItems = menu.querySelector('ul');
+
+    const handlerMenu = function () {
+      menu.classList.toggle('active-menu');
+    };
+
+    menuButton.addEventListener('click', handlerMenu);
+
+    closeButton.addEventListener('click', handlerMenu);
+
+    menuItems.addEventListener('click', handlerMenu);
+
+  };
+  toggleMenu();
+
+  // Popup-окно
+  const togglePopUp = () => {
+    const popupButtons= document.querySelectorAll('.popup-btn'),
+          popup = document.querySelector('.popup'),
+          closePopUpButton = document.querySelector('.popup-close'),
+          popUpContent = document.querySelector('.popup-content');
+
+    let idInterval,
+        count = 0;
+
+    // animate popup
+    const animatePopUp = () => {
+      count++;
+      if (parseFloat(popUpContent.style.left) < 38) {
+        popUpContent.style.left = count + '%';
+      } else {
+        clearInterval(idInterval);
+        count = 0;
+      }
+    };
+
+    popupButtons.forEach(item => {
+      item.addEventListener('click', () => {
+        popup.style.display = 'block';
+        popUpContent.style.left = '-50%';
+        if (window.innerWidth > 768) {
+          idInterval = setInterval(animatePopUp, 10);
+        } else {
+          popUpContent.style.left = '38%';
+        }
+      });
+    });
+
+    closePopUpButton.addEventListener('click', () => {
+        popup.style.display = 'none';
+    });
+  };
+  togglePopUp();
 
 });
