@@ -41,21 +41,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Меню
   const toggleMenu = () => {
-    const menuButton = document.querySelector('.menu'),
-          menu = document.querySelector('menu'),
-          closeButton = document.querySelector('.close-btn'),
-          menuItems = menu.querySelector('ul');
+    const menu = document.querySelector('menu');
 
-    const handlerMenu = function () {
+    const handlerMenu = () => {
       menu.classList.toggle('active-menu');
     };
 
-    menuButton.addEventListener('click', handlerMenu);
-
-    closeButton.addEventListener('click', handlerMenu);
-
-    menuItems.addEventListener('click', handlerMenu);
-
+    // Закрытие меню
+    document.addEventListener('click', (e) => {
+      let target = e.target;
+      if (target.closest('.menu') ||
+          target.classList.contains('close-btn') ||
+          target.matches('ul>li>a') ||
+          !target.closest('.active-menu')) {
+        handlerMenu();
+      }
+    });
   };
   toggleMenu();
 
@@ -63,13 +64,12 @@ window.addEventListener('DOMContentLoaded', () => {
   const togglePopUp = () => {
     const popupButtons= document.querySelectorAll('.popup-btn'),
           popup = document.querySelector('.popup'),
-          closePopUpButton = document.querySelector('.popup-close'),
           popUpContent = document.querySelector('.popup-content');
 
+    // animate popup
     let idInterval,
         count = 0;
 
-    // animate popup
     const animatePopUp = () => {
       count++;
       if (parseFloat(popUpContent.style.left) < 38) {
@@ -80,6 +80,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     };
 
+    // Открытие popup окна + анимация
     popupButtons.forEach(item => {
       item.addEventListener('click', () => {
         popup.style.display = 'block';
@@ -92,8 +93,13 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    closePopUpButton.addEventListener('click', () => {
+    // Закрытие popup окна
+    popup.addEventListener('click', (e) => {
+      let target = e.target;
+      // если нажимаем кнопку "Закрыть" или нажимаем вне области окна, то закрываем его
+      if (target.classList.contains('popup-close') || !target.closest('.popup-content')) {
         popup.style.display = 'none';
+      }
     });
   };
   togglePopUp();
@@ -118,14 +124,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     tabsHeader.addEventListener('click', (e) => {
       let target = e.target;
-      while (target !== tabsHeader) {
-        if (target.classList.contains('service-header-tab')) {
-          tabs.forEach((item, i) => {
-            if (item === target) {toggleTabContent(i);}
-          });
-          return;
-        }
-        target = target.parentNode;
+      target = target.closest('.service-header-tab'); // если нет класса, поднимается выше по DOM-дереву к родителю
+      if (target) {
+        tabs.forEach((item, i) => {
+          if (item === target) {toggleTabContent(i);}
+        });
       }
     });
   };
