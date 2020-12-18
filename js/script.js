@@ -98,4 +98,37 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   togglePopUp();
 
+  // Tabs
+  const toggleTabs = () => {
+    const tabsHeader = document.querySelector('.service-header'),
+          tabs = document.querySelectorAll('.service-header-tab'),
+          tabsContent = document.querySelectorAll('.service-tab');
+
+    const toggleTabContent = (index) => {
+      tabsContent.forEach((item, i) => {
+        if (i === index) {
+          tabs[i].classList.add('active');
+          item.classList.remove('d-none');
+        } else {
+          tabs[i].classList.remove('active');
+          item.classList.add('d-none');
+        }
+      });
+    };
+
+    tabsHeader.addEventListener('click', (e) => {
+      let target = e.target;
+      while (target !== tabsHeader) {
+        if (target.classList.contains('service-header-tab')) {
+          tabs.forEach((item, i) => {
+            if (item === target) {toggleTabContent(i);}
+          });
+          return;
+        }
+        target = target.parentNode;
+      }
+    });
+  };
+  toggleTabs();
+
 });
