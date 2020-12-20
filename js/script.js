@@ -47,14 +47,14 @@ window.addEventListener('DOMContentLoaded', () => {
       menu.classList.toggle('active-menu');
     };
 
-    // Закрытие меню
     document.addEventListener('click', (e) => {
       let target = e.target;
       if (target.closest('.menu') ||
           target.classList.contains('close-btn') ||
-          target.matches('ul>li>a') ||
-          !target.closest('.active-menu')) {
+          target.matches('ul>li>a')) {
         handlerMenu();
+      } else if (!target.closest('.active-menu')) {
+        menu.classList.remove('active-menu');
       }
     });
   };
