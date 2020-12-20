@@ -138,59 +138,90 @@ window.addEventListener('DOMContentLoaded', () => {
   const toggleSlider = () => {
     const slides = document.querySelectorAll('.portfolio-item'),
           dots = document.querySelectorAll('.dot'),
-          buttons = document.querySelectorAll('.portfolio-btn'),
           slider = document.querySelector('.portfolio-content');
 
     let currentSlide = 0,
         idInterval;
 
+    // удаляем активный класс у текущего элемента слайдера
     const prevSlide = (element, index, strClass) => {
-      element[index].classList.remove(strClass); // удаляем активный класс у текущего элемента слайдера
+      element[index].classList.remove(strClass);
     };
 
+    // добавляем активный класс следующему элементу слайдера
     const nextSlide = (element, index, strClass) => {
-      element[index].classList.add(strClass); // добавляем активный класс следующему элементу слайдера
+      element[index].classList.add(strClass);
     };
 
-    // Автоматическое переключение слайдов
+    // автоматическое переключение слайдов
     const autoPlaySlider = () => {
       prevSlide(slides, currentSlide, 'portfolio-item-active'); // скрываем текущий слайд
       prevSlide(dots, currentSlide, 'dot-active'); // удаляем активный стиль пагинации текущего слайда
+
       currentSlide++;
+
       if (currentSlide === slides.length) {currentSlide = 0;}
+
       nextSlide(slides, currentSlide, 'portfolio-item-active'); // делаем видимым следующий слайд
       nextSlide(dots, currentSlide, 'dot-active'); // добавялем активный стиль пагинации следующего слайда
     };
 
-    // Слайдшоу
+    // запуск слайдшоу
     const startAutoPlay = () => {
-      idInterval = setInterval(autoPlaySlider, 1500);
+      idInterval = setInterval(autoPlaySlider, 2000);
     };
     startAutoPlay();
 
-    // Ручное переключение слайдов
-    const toggleSliderContent = (index) => {
-      slides.forEach((item, i) => {
-        if (i === index) {
-          dots[i].classList.add('dot-active');
-          item.classList.add('portfolio-item-active');
-        } else {
-          dots[i].classList.remove('dot-active');
-          item.classList.remove('portfolio-item-active');
-        }
-      });
+    // останов слайдшоу
+    const stopAutoPlay = () => {
+      clearInterval(idInterval);
     };
 
-    slider.addEventListener('click', (e) => {
-      let target = e.target;
-      if (target.classList.contains('dot')) {
-        clearInterval(idInterval);
-        dots.forEach((item, i) => {
-          if (item === target) {toggleSliderContent(i);}
-        });
-      }
+    // останов слайдшоу при наведении на кнопку или пагинацию
+    slider.addEventListener('mouseover', (e) => {
+      if (e.target.matches('.portfolio-btn') || e.target.matches('.dot')) {stopAutoPlay();}
     });
 
+    // запуск слайдшоу в иных случаях
+    slider.addEventListener('mouseout', (e) => {
+      if (e.target.matches('.portfolio-btn') || e.target.matches('.dot')) {startAutoPlay();}
+    });
+
+    // переключение слайдов по клику на кнопку или пагинацию
+    slider.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      let target = e.target;
+
+      // условие для предовращения влияния клика по слайду на верстку
+      if (!target.matches('.dot') && !target.matches('.portfolio-btn')) {return;}
+
+      // удаляем стили у текущего слайда и пагинации
+      prevSlide(slides, currentSlide, 'portfolio-item-active');
+      prevSlide(dots, currentSlide, 'dot-active');
+
+      // обработка клика по кнопке или пагинации
+      if (target.matches('.dot')) {
+        dots.forEach((dot, index) => {
+          if (dot === target) {currentSlide = index;}
+        });
+      } else if (target.matches('#arrow-right')) {
+        currentSlide++;
+      } else if (target.matches('#arrow-left')) {
+        currentSlide--;
+      }
+
+      // условие для бесконечного листания слайдов
+      if (currentSlide >= slides.length) {
+        currentSlide = 0;
+      } else if (currentSlide < 0) {
+        currentSlide = slides.length - 1;
+      }
+
+      // добавляем стили следующему слайду и пагинации
+      nextSlide(slides, currentSlide, 'portfolio-item-active');
+      nextSlide(dots, currentSlide, 'dot-active');
+    });
   };
   toggleSlider();
 
