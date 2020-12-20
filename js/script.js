@@ -134,4 +134,64 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   toggleTabs();
 
+  // Слайдер
+  const toggleSlider = () => {
+    const slides = document.querySelectorAll('.portfolio-item'),
+          dots = document.querySelectorAll('.dot'),
+          buttons = document.querySelectorAll('.portfolio-btn'),
+          slider = document.querySelector('.portfolio-content');
+
+    let currentSlide = 0,
+        idInterval;
+
+    const prevSlide = (element, index, strClass) => {
+      element[index].classList.remove(strClass); // удаляем активный класс у текущего элемента слайдера
+    };
+
+    const nextSlide = (element, index, strClass) => {
+      element[index].classList.add(strClass); // добавляем активный класс следующему элементу слайдера
+    };
+
+    // Автоматическое переключение слайдов
+    const autoPlaySlider = () => {
+      prevSlide(slides, currentSlide, 'portfolio-item-active'); // скрываем текущий слайд
+      prevSlide(dots, currentSlide, 'dot-active'); // удаляем активный стиль пагинации текущего слайда
+      currentSlide++;
+      if (currentSlide === slides.length) {currentSlide = 0;}
+      nextSlide(slides, currentSlide, 'portfolio-item-active'); // делаем видимым следующий слайд
+      nextSlide(dots, currentSlide, 'dot-active'); // добавялем активный стиль пагинации следующего слайда
+    };
+
+    // Слайдшоу
+    const startAutoPlay = () => {
+      idInterval = setInterval(autoPlaySlider, 1500);
+    };
+    startAutoPlay();
+
+    // Ручное переключение слайдов
+    const toggleSliderContent = (index) => {
+      slides.forEach((item, i) => {
+        if (i === index) {
+          dots[i].classList.add('dot-active');
+          item.classList.add('portfolio-item-active');
+        } else {
+          dots[i].classList.remove('dot-active');
+          item.classList.remove('portfolio-item-active');
+        }
+      });
+    };
+
+    slider.addEventListener('click', (e) => {
+      let target = e.target;
+      if (target.classList.contains('dot')) {
+        clearInterval(idInterval);
+        dots.forEach((item, i) => {
+          if (item === target) {toggleSliderContent(i);}
+        });
+      }
+    });
+
+  };
+  toggleSlider();
+
 });
