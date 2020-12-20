@@ -145,9 +145,14 @@ window.addEventListener('DOMContentLoaded', () => {
         idInterval;
 
     // добавляем пагинацию
-    slides.forEach(() => {
+    slides.forEach((item, index) => {
       let li = document.createElement('li');
-      li.classList.add('dot');
+      if (index === 0) {
+        li.classList.add('dot');
+        li.classList.add('dot-active');
+      } else {
+        li.classList.add('dot');
+      }
       dotsContainer.append(li);
     });
 
