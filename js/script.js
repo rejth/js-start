@@ -137,11 +137,21 @@ window.addEventListener('DOMContentLoaded', () => {
   // Слайдер
   const toggleSlider = () => {
     const slides = document.querySelectorAll('.portfolio-item'),
-          dots = document.querySelectorAll('.dot'),
-          slider = document.querySelector('.portfolio-content');
+          slider = document.querySelector('.portfolio-content'),
+          dotsContainer = document.querySelector('.portfolio-dots');
 
-    let currentSlide = 0,
+    let dots = document.querySelectorAll('.dot'),
+        currentSlide = 0,
         idInterval;
+
+    // добавляем пагинацию
+    slides.forEach(() => {
+      let li = document.createElement('li');
+      li.classList.add('dot');
+      dotsContainer.append(li);
+    });
+
+    dots = document.querySelectorAll('.dot');
 
     // удаляем активный класс у текущего элемента слайдера
     const prevSlide = (element, index, strClass) => {
