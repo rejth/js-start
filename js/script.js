@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', () => {
     updateClock();
     idInterval = setInterval(updateClock, 1000);
   }
-  countTimer('20 december 2020');
+  countTimer('31 december 2020');
 
   // Меню
   const toggleMenu = () => {
@@ -240,4 +240,29 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   toggleSlider();
 
+  // Блок "Наша команда"
+  const handlerPhotoMouseEnter = () => {
+    const images = document.querySelectorAll('.command img');
+    images.forEach(img => {
+      const imageSrc = img.src;
+      img.addEventListener('mouseenter', () => {
+          img.src = img.dataset.img;
+      });
+      img.addEventListener('mouseleave', () => {
+          img.src = imageSrc;
+      });
+    });
+  };
+  handlerPhotoMouseEnter();
+
+  // Валидация значений в калькуляторе
+  const validateCalculatorValues = () => {
+    const calcContainer = document.querySelector('.calc');
+    calcContainer.addEventListener('input', (e) => {
+      if (e.target.matches('input')) {
+        e.target.value = e.target.value.replace(/[^\d]/g, '');
+      }
+    });
+  };
+  validateCalculatorValues();
 });
