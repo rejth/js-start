@@ -266,7 +266,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   validateCalculatorValues();
 
-  // Калькуляторе
+  // Калькулятор
   const calculator = (price = 100) => {
     const calcBlock = document.querySelector('.calc-block'),
           roomType = document.querySelector('.calc-type'),
