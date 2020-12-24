@@ -291,7 +291,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (workDurationValue && workDurationValue < 5) {
         dayValue *= 2;
-      } else if (workDurationValue && workDurationValue > 5 && workDurationValue < 10) {
+      } else if (workDurationValue && workDurationValue >= 5 && workDurationValue < 10) {
         dayValue *= 1.5;
       }
 
