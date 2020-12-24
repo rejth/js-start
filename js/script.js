@@ -296,7 +296,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       if (roomType && roomSquare) {
-        total = price * selectedRoomTypeValue * roomSquareValue * countValue * dayValue;
+        total = Math.floor(price * selectedRoomTypeValue * roomSquareValue * countValue * dayValue);
       }
 
       totalPrice.textContent = total;
