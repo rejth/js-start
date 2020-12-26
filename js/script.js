@@ -309,4 +309,54 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   };
   calculator(100);
+
+  // Отправка данных формы на сервер (AJAX)
+  const sendForm = () => {
+    const errorMessage = 'Что-то пошло не так...',
+          loadMessage = 'Загрузка...',
+          successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+
+    const form = document.querySelector('.main-form'), // форма для заполнения заявки
+          statusMessageElement = document.createElement('div'); // сообщение о статусе отправки заявки
+
+    statusMessageElement.style.cssText = 'font-size: 2rem;';
+
+    const postData = (requestBody, outputData, errorData) => {
+      const request = new XMLHttpRequest();
+
+      request.addEventListener('readystatechange', () => {
+        if (request.readyState !== 4) {return;}
+
+        if (request.status === 200) {
+          outputData();
+        } else {
+          errorData();
+        }
+      });
+
+      request.open('POST', 'server.php');
+      request.setRequestHeader('Content-Type', 'application/json');
+      request.send(JSON.stringify(requestBody));
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      form.append(statusMessageElement);
+
+      statusMessageElement.textContent = loadMessage;
+
+      const formData = new FormData(form);
+      let body = {};
+
+      // берем данные формы и заполняем тело запроса body
+      formData.forEach((item, index) => body[index] = item); // у объекта formData есть свой метод forEach()
+
+      postData(body, () => {
+        statusMessageElement.textContent = successMessage;
+      }, () => {
+        statusMessageElement.textContent = errorMessage;
+      });
+    });
+  };
+  sendForm();
 });
