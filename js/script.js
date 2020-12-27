@@ -255,17 +255,6 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   handlerPhotoMouseEnter();
 
-  // Валидация значений в калькуляторе
-  const validateCalculatorValues = () => {
-    const calcContainer = document.querySelector('.calc');
-    calcContainer.addEventListener('input', (e) => {
-      if (e.target.matches('input')) {
-        e.target.value = e.target.value.replace(/[^\d]/g, '');
-      }
-    });
-  };
-  validateCalculatorValues();
-
   // Калькулятор
   const calculator = (price = 100) => {
     const calcBlock = document.querySelector('.calc-block'),
@@ -275,6 +264,19 @@ window.addEventListener('DOMContentLoaded', () => {
           workDuration = document.querySelector('.calc-day'),
           totalPrice = document.querySelector('.calc-total');
 
+    // Валидация значений в калькуляторе
+    const validateCalculatorValues = () => {
+      const calcContainer = document.querySelector('.calc');
+      calcContainer.addEventListener('input', (e) => {
+        if (e.target.matches('input')) {
+          e.target.value = e.target.value.replace(/[^\d]/g, '');
+        }
+      });
+    };
+
+    validateCalculatorValues();
+
+    // Расчет
     const calcTotalPrice = () => {
       let total = 0,
           countValue = 1,
@@ -310,17 +312,19 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   calculator(100);
 
-  // Отправка данных формы на сервер (AJAX)
-  const sendForm = () => {
+  // Отправка данных формы на сервер
+  const sendForm = (formIdString) => {
     const errorMessage = 'Что-то пошло не так...',
           loadMessage = 'Загрузка...',
           successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
-    const form = document.querySelector('.main-form'), // форма для заполнения заявки
-          statusMessageElement = document.createElement('div'); // сообщение о статусе отправки заявки
+    const form = document.getElementById(formIdString), // форма для заполнения заявки
+          statusMessageElement = document.createElement('div'), // сообщение о статусе отправки заявки
+          inputs = document.querySelectorAll(`#${formIdString} input`); // все inputs из формы
 
-    statusMessageElement.style.cssText = 'font-size: 2rem;';
+    statusMessageElement.style.cssText = 'font-size: 2rem; color: white';
 
+    // Функция отправки данных формы на сервер
     const postData = (requestBody, outputData, errorData) => {
       const request = new XMLHttpRequest();
 
@@ -339,6 +343,28 @@ window.addEventListener('DOMContentLoaded', () => {
       request.send(JSON.stringify(requestBody));
     };
 
+  // Валидация данных при вводе телефона
+    form.addEventListener('input', (e) => {
+      if (e.target.matches('input[name="user_phone"]')) {
+        e.target.value = e.target.value.replace(/[^\d\+]/g, '');
+      }
+    });
+
+  // Валидация данных при вводе имени
+    form.addEventListener('input', (e) => {
+      if (e.target.matches('input[name="user_name"]')) {
+        e.target.value = e.target.value.replace(/[^А-Яа-яЁё\s]|/g, '');
+      }
+    });
+
+  // Валидация данных при вводе сообщения
+    form.addEventListener('input', (e) => {
+      if (e.target.matches('input[name="user_message"]')) {
+        e.target.value = e.target.value.replace(/[^А-Яа-яЁё\d\s\,\.\?\-:;!'"-&%]/g, '');
+      }
+    });
+
+    // Слушатель формы
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       form.append(statusMessageElement);
@@ -352,11 +378,15 @@ window.addEventListener('DOMContentLoaded', () => {
       formData.forEach((item, index) => body[index] = item); // у объекта formData есть свой метод forEach()
 
       postData(body, () => {
-        statusMessageElement.textContent = successMessage;
+        statusMessageElement.textContent = successMessage; // callback 1
       }, () => {
-        statusMessageElement.textContent = errorMessage;
+        statusMessageElement.textContent = errorMessage; // callback 2
       });
+
+      inputs.forEach(item => item.value = ''); // очистка input
     });
   };
-  sendForm();
+  sendForm('form1'); // главная форма в header
+  sendForm('form2'); // форма в footer
+  sendForm('form3'); // форма из модального окна
 });
