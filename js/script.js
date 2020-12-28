@@ -347,13 +347,15 @@ window.addEventListener('DOMContentLoaded', () => {
   // Валидация данных при вводе телефона
     form.addEventListener('input', (e) => {
       if (e.target.matches('input[name="user_phone"]')) {
-        e.target.value = e.target.value.replace(/[^\d\+]/g, '');
+        e.target.setAttribute('pattern', '^[0-9-\+\s\(\)]{11,18}$');
+        e.target.value = e.target.value.replace(/[^\d\+\-()]/g, '');
       }
     });
 
   // Валидация данных при вводе email
     form.addEventListener('input', (e) => {
       if (e.target.matches('input[name="user_email"]')) {
+        e.target.setAttribute('pattern', '^[A-Za-z0-9\.-_]+@[A-Za-z]+\.[A-Za-z]{2,3}$');
         e.target.value = e.target.value.replace(/[^A-Za-z\d\.\-@_]/g, '');
       }
     });
@@ -361,14 +363,15 @@ window.addEventListener('DOMContentLoaded', () => {
   // Валидация данных при вводе имени
     form.addEventListener('input', (e) => {
       if (e.target.matches('input[name="user_name"]')) {
-        e.target.value = e.target.value.replace(/[^А-Яа-яЁё\s]|/g, '');
+        e.target.setAttribute('pattern', '[А-Яа-яЁё\-]{2,}');
+        e.target.value = e.target.value.replace(/[^А-Яа-яЁё\s-]|/g, '');
       }
     });
 
   // Валидация данных при вводе сообщения
     form.addEventListener('input', (e) => {
       if (e.target.matches('input[name="user_message"]')) {
-        e.target.value = e.target.value.replace(/[^А-Яа-яЁё\d\s\,\.\?\-:;!'"-&%]/g, '');
+        e.target.value = e.target.value.replace(/[^А-Яа-яЁё\d\s,\.\?\(\)\*\+\$-:;!'"@&%#№]/g, '');
       }
     });
 
