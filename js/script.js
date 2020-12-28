@@ -325,22 +325,23 @@ window.addEventListener('DOMContentLoaded', () => {
     statusMessageElement.style.cssText = 'font-size: 2rem; color: white';
 
     // Функция отправки данных формы на сервер
-    const postData = (requestBody, outputData, errorData) => {
-      const request = new XMLHttpRequest();
+    const postData = (requestBody) => {
+      return new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest();
 
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) {return;}
+        request.addEventListener('readystatechange', () => {
+          if (request.readyState !== 4) {return;}
+          if (request.status === 200) {
+            resolve();
+          } else {
+            reject();
+          }
+        });
 
-        if (request.status === 200) {
-          outputData();
-        } else {
-          errorData();
-        }
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(JSON.stringify(requestBody));
       });
-
-      request.open('POST', 'server.php');
-      request.setRequestHeader('Content-Type', 'application/json');
-      request.send(JSON.stringify(requestBody));
     };
 
   // Валидация данных при вводе телефона
@@ -384,13 +385,12 @@ window.addEventListener('DOMContentLoaded', () => {
       // берем данные формы и заполняем тело запроса body
       formData.forEach((item, index) => body[index] = item); // у объекта formData есть свой метод forEach()
 
-      postData(body, () => {
-        statusMessageElement.textContent = successMessage; // callback 1
-      }, () => {
-        statusMessageElement.textContent = errorMessage; // callback 2
-      });
+      // отправка данных и уведомление пользователя
+      postData(body)
+        .then(() => statusMessageElement.textContent = successMessage)
+        .catch(() => statusMessageElement.textContent = errorMessage);
 
-      inputs.forEach(item => item.value = ''); // очистка input
+      inputs.forEach(item => item.value = ''); // очистка input после отправки данных
     });
   };
   sendForm('form1'); // главная форма в header
