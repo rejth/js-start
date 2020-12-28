@@ -350,6 +350,13 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+  // Валидация данных при вводе email
+    form.addEventListener('input', (e) => {
+      if (e.target.matches('input[name="user_email"]')) {
+        e.target.value = e.target.value.replace(/[^A-Za-z\d\.\-@_]/g, '');
+      }
+    });
+
   // Валидация данных при вводе имени
     form.addEventListener('input', (e) => {
       if (e.target.matches('input[name="user_name"]')) {
