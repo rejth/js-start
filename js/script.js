@@ -334,7 +334,7 @@ window.addEventListener('DOMContentLoaded', () => {
           if (request.status === 200) {
             resolve();
           } else {
-            reject();
+            reject(request.statusText);
           }
         });
 
@@ -391,7 +391,10 @@ window.addEventListener('DOMContentLoaded', () => {
       // отправка данных и уведомление пользователя
       postData(body)
         .then(() => statusMessageElement.textContent = successMessage)
-        .catch(() => statusMessageElement.textContent = errorMessage);
+        .catch(error => {
+          statusMessageElement.textContent = errorMessage;
+          console.log(error);
+        });
 
       inputs.forEach(item => item.value = ''); // очистка input после отправки данных
     });
