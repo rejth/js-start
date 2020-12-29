@@ -326,21 +326,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // Функция отправки данных формы на сервер
     const postData = (requestBody) => {
-      return new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
-
-        request.addEventListener('readystatechange', () => {
-          if (request.readyState !== 4) {return;}
-          if (request.status === 200) {
-            resolve();
-          } else {
-            reject(request.statusText);
-          }
-        });
-
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.send(JSON.stringify(requestBody));
+      return fetch('server.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
       });
     };
 
@@ -390,10 +381,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
       // отправка данных и уведомление пользователя
       postData(body)
-        .then(() => statusMessageElement.textContent = successMessage)
+        .then(response => {
+          if (response.status !== 200) {throw new Error('Response status code is not 200');}
+          statusMessageElement.textContent = successMessage;
+        })
         .catch(error => {
           statusMessageElement.textContent = errorMessage;
-          console.log(error);
+          console.error(error);
         });
 
       inputs.forEach(item => item.value = ''); // очистка input после отправки данных
