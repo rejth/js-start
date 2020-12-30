@@ -10,8 +10,8 @@ const togglePopUp = () => {
 
 	const animatePopUp = () => {
 		count++;
-		if (parseFloat(popUpContent.style.left) < 38) {
-			popUpContent.style.left = count + '%';
+		if (parseFloat(popUpContent.style.top) < 20) {
+			popUpContent.style.top = count + '%';
 		} else {
 			clearInterval(idInterval);
 			count = 0;
@@ -22,6 +22,12 @@ const togglePopUp = () => {
 	popupButtons.forEach(item => {
 		item.addEventListener('click', () => {
 			popup.style.display = 'block';
+			popUpContent.style.top = '-200%';
+			if (window.innerWidth > 768) {
+				idInterval = setInterval(animatePopUp, 15);
+			} else {
+				popUpContent.style.top = '20%';
+			}
 		});
 	});
 

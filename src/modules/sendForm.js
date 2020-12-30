@@ -23,16 +23,16 @@ const sendForm = formIdString => {
 	// Валидация данных при вводе телефона
 	form.addEventListener('input', e => {
 		if (e.target.matches('input[name="user_phone"]')) {
-			e.target.setAttribute('pattern', '^[0-9-+s()]{11,18}$');
-			e.target.value = e.target.value.replace(/[^\d+\-()]/g, '');
+			e.target.setAttribute('pattern', '^[0-9-+()]{11,16}$');
+			e.target.value = e.target.value.replace(/[^\d+()-]/g, '');
 		}
 	});
 
 	// Валидация данных при вводе email
 	form.addEventListener('input', e => {
 		if (e.target.matches('input[name="user_email"]')) {
-			e.target.setAttribute('pattern', '^[A-Za-z0-9.-_]+@[A-Za-z]+.[A-Za-z]{2,3}$');
-			e.target.value = e.target.value.replace(/[^A-Za-z\d\-.@_]/g, '');
+			e.target.setAttribute('pattern', '^[A-Za-z0-9._-]+@[A-Za-z]+.[A-Za-z]{2,3}$');
+			e.target.value = e.target.value.replace(/[^A-Za-z\d.@_-]/g, '');
 		}
 	});
 
