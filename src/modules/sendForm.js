@@ -47,7 +47,8 @@ const sendForm = formIdString => {
 	// Валидация данных при вводе сообщения
 	form.addEventListener('input', e => {
 		if (e.target.matches('input[name="user_message"]')) {
-			e.target.value = e.target.value.replace(/[^А-Яа-яЁё\d\s,?()*+$-:;.!'"@&%#№]/g, '');
+			e.target.setAttribute('type', 'text');
+			e.target.value = e.target.value.replace(/[^А-Яа-яЁё\s().,!?'";:-]/g, '');
 		}
 	});
 

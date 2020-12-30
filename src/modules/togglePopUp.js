@@ -22,12 +22,6 @@ const togglePopUp = () => {
 	popupButtons.forEach(item => {
 		item.addEventListener('click', () => {
 			popup.style.display = 'block';
-			popUpContent.style.left = '-50%';
-			if (window.innerWidth > 768) {
-				idInterval = setInterval(animatePopUp, 10);
-			} else {
-				popUpContent.style.left = '38%';
-			}
 		});
 	});
 
