@@ -1,0 +1,21 @@
+{
+  "name": "glo-js-study-project",
+  "version": "1.0.0",
+  "description": "My study JS project",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.prod.config.js",
+    "dev": "webpack serve --config webpack.dev.config.js",
+    "watch": "webpack --watch --config webpack.dev.config.js"
+  },
+  "author": "Ilya Kirsanov",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.11.1",
+    "webpack-cli": "^4.3.0",
+    "webpack-dev-server": "^3.11.1"
+  }
+}
