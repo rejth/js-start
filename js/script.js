@@ -320,6 +320,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const form = document.getElementById(formIdString), // форма для заполнения заявки
           statusMessageElement = document.createElement('div'), // сообщение о статусе отправки заявки
+          popup = document.querySelector('.popup'), // pop-up окно
           inputs = document.querySelectorAll(`#${formIdString} input`); // все inputs из формы
 
     statusMessageElement.style.cssText = 'font-size: 2rem; color: white';
@@ -366,20 +367,20 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Слушатель формы
+    // Слушатель формы на отправку данных
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       form.append(statusMessageElement);
 
-      statusMessageElement.textContent = loadMessage;
+      statusMessageElement.textContent = loadMessage; // сообщение о загрузке
 
       const formData = new FormData(form);
       let body = {};
 
-      // берем данные формы и заполняем тело запроса body
+      // Перебор данных формы и заполнение тела запроса body
       formData.forEach((item, index) => body[index] = item); // у объекта formData есть свой метод forEach()
 
-      // отправка данных и уведомление пользователя
+      // Отправка данных и уведомление пользователя
       postData(body)
         .then(response => {
           if (response.status !== 200) {throw new Error('Response status code is not 200');}
@@ -391,6 +392,9 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
       inputs.forEach(item => item.value = ''); // очистка input после отправки данных
+
+      setTimeout(() => statusMessageElement.remove(), 5000); // удаление сообщения о статусе
+      setTimeout(() => popup.style.display = 'none', 7000); // закрытие модального окна
     });
   };
   sendForm('form1'); // главная форма в header
