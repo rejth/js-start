@@ -39,7 +39,7 @@ const sendForm = formIdString => {
 	// Валидация данных при вводе имени
 	form.addEventListener('input', e => {
 		if (e.target.matches('input[name="user_name"]')) {
-			e.target.setAttribute('pattern', '[А-Яа-яЁё-]{2,}');
+			e.target.setAttribute('pattern', '[А-Яа-яЁё-]{2,25}');
 			e.target.value = e.target.value.replace(/[^А-Яа-яЁё\s-]|/g, '');
 		}
 	});
