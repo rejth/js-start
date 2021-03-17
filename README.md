@@ -1,3 +1,3 @@
 # js-start
 
-Учебные проекты для практики JS
+Simple tasks for JavaScript learning purpose
